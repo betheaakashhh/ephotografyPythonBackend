@@ -1,38 +1,22 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, File, UploadFile, Form, BackgroundTasks
 from fastapi.responses import FileResponse 
-import os, uuid, time, datetime, json , asyncio
+from rembg import remove
+from services.layout_services import apply_print_layout
+from services.face_crop import crop_by_face
+from services.present import PRESETS
+from PIL import Image
+import uuid, time, datetime, json , asyncio
+from services.mongo_helper import mongo_db 
 
 
 app = FastAPI()
 
-
-rembg = None
-Image = None
-apply_print_layout = None
-crop_by_face = None
-PRESETS = None
-mongo_db = None
-
-def lazy_imports():
-    global rembg, Image, apply_print_layout, crop_by_face, PRESETS, mongo_db
-    if rembg is None:
-        from rembg import remove
-        rembg = remove
-    if Image is None:
-        from PIL import Image
-    if apply_print_layout is None:
-        from services.layout_services import apply_print_layout
-    if crop_by_face is None:
-        from services.face_crop import crop_by_face
-    if PRESETS is None:
-        from services.present import PRESETS
-    if mongo_db is None:
-        from services.mongo_helper import mongo_db
-
 @app.on_event("startup")
 async def startup_event():
     # Connect to MongoDB
-    lazy_imports()  # Load imports here
+    
     connected = mongo_db.connect()
     if not connected:
         print("Warning: Could not connect to MongoDB at startup.")
@@ -80,9 +64,8 @@ async def remove_background(
     copies: int = Form(6)
 ):
     try:
-        lazy_imports() 
-        
         job_id, job_path = create_job_folder()
+
         
         if mongo_db.db is None:
             print(" MongoDB not connected, attempting to reconnect...")
@@ -98,8 +81,9 @@ async def remove_background(
         input_image = Image.open(file.file).convert("RGBA")
         input_image.convert("RGB").save(original_path, "JPEG")
 
-        output_image = rembg(input_image)  
+        output_image = remove(input_image)
         output_image.save(transparent_path, "PNG")
+
         # job count
         try:
             job_count = mongo_db.get_collection("jobs").count_documents({}) + 1
