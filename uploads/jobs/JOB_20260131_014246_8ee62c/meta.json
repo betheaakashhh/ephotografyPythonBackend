@@ -1,0 +1,14 @@
+{
+  "job_id": "JOB_20260131_014246_8ee62c",
+  "preset": "passport",
+  "bg_color": "#ffffff",
+  "copies": 4,
+  "created_at": "2026-01-31T01:42:53.004951",
+  "original_path": "uploads/jobs\\JOB_20260131_014246_8ee62c/original.jpg",
+  "transparent_path": "uploads/jobs\\JOB_20260131_014246_8ee62c/transparent.png",
+  "final_path": "uploads/jobs\\JOB_20260131_014246_8ee62c/final_sheet.jpg",
+  "status": "completed",
+  "job_no": 13,
+  "price": 40,
+  "customer_name": "Walk-in"
+}

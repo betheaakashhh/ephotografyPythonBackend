@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+# Virtual environments
+venv/
+env/
+ENV/
+venv/
+env/
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+# Unit test / coverage reports
+tox/
+coverage
+coverage.xml
+*.cover
+pytest_cache/
+# Jupyter Notebook checkpoints
+ipynb_checkpoints/
+# IDE-specific settings
+vscode/
+idea/
+*.sublime-*
+# Logs and temporary files
+*.log
+logs/
+# Environment variables
+*.env
