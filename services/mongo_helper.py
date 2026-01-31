@@ -6,7 +6,8 @@ from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from bson import ObjectId
 from datetime import datetime
 
-load_dotenv()
+if os.path.exists('.env'):
+    load_dotenv()
 
 class MongoDB:
     def __init__(self):
@@ -16,9 +17,15 @@ class MongoDB:
         self.db = None
         
         if not self.uri:
-            raise ValueError("❌ MONGODB_URI not found in .env file")
+            print("⚠️  MONGODB_URI not found in environment variables")
+            # Don't raise error, allow app to start without MongoDB
+            # This is important for Render to build successfully
     
     def connect(self):
+        if not self.uri:
+            print("❌ Cannot connect: MONGODB_URI not set")
+            return False
+            
         try:
             self.client = MongoClient(
                 self.uri,

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: photo-processor-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: MONGODB_URI
+        sync: false  # You'll set this in Render dashboard
+      - key: MONGO_DB_NAME
+        value: photo-processor
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/uploads
+      sizeGB: 1

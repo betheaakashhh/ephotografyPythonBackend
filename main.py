@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, File, UploadFile, Form, BackgroundTasks
 from fastapi.responses import FileResponse 
 from rembg import remove
@@ -5,7 +7,7 @@ from services.layout_services import apply_print_layout
 from services.face_crop import crop_by_face
 from services.present import PRESETS
 from PIL import Image
-import os, uuid, time, datetime, json , asyncio
+import uuid, time, datetime, json , asyncio
 from services.mongo_helper import mongo_db 
 
 
@@ -239,3 +241,7 @@ async def check_jobs():
         }
     except Exception as e:
         return {"status": "error", "error": str(e)}
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 7000))  # Default to 7000 if PORT not set
+    uvicorn.run(app, host="0.0.0.0", port=port)
